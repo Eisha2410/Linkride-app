@@ -1,0 +1,7 @@
+<h2>Offer a Ride</h2>
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Post Ride</button>
+</form>
+<a href="{% url 'ride_list' %}">Back to Rides</a>

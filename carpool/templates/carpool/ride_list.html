@@ -1,0 +1,13 @@
+<h2>Available Rides</h2>
+<a href="{% url 'create_ride' %}">Offer a Ride</a>
+<ul>
+  {% for ride in rides %}
+    <li>
+      <strong>{{ ride.origin }} → {{ ride.destination }}</strong><br>
+      Date: {{ ride.date }} at {{ ride.time }}<br>
+      Seats: {{ ride.seats_available }} | Fare: Rs {{ ride.fare }}
+    </li>
+  {% empty %}
+    <li>No rides available.</li>
+  {% endfor %}
+</ul>

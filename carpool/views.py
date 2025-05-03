@@ -11,11 +11,14 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 
+# FRONTEND: Used only for Django template testing
+# NOT used in React frontend
 def ride_list(request):
     rides = Ride.objects.all().order_by('-date', '-time')
     return render(request, 'carpool/ride_list.html', {'rides': rides})
 
-
+# FRONTEND: Used only for Django template testing
+# NOT used in React frontend
 def create_ride(request):
     if request.method == 'POST':
         form = RideForm(request.POST)
@@ -28,6 +31,10 @@ def create_ride(request):
         form = RideForm()
     return render(request, 'carpool/create_ride.html', {'form': form})
 
+# FRONTEND: 
+# - "Available Rides" page (GET)
+# - "Create Ride" form/button (POST)
+# React will call this for listing and creating rides
 class RideListCreateAPIView(generics.ListCreateAPIView):
     queryset = Ride.objects.all()
     serializer_class = RideSerializer
@@ -36,6 +43,9 @@ class RideListCreateAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(driver=self.request.user)
 
+# FRONTEND:
+# - View/Edit/Delete specific ride
+# Used when user opens ride detail page, updates or deletes it
 class RideRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ride.objects.all()
     serializer_class = RideSerializer
@@ -51,6 +61,9 @@ class RideRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied("You are not allowed to delete this ride.")
         instance.delete()
 
+# FRONTEND:
+# - Can be used for future filtering rides by driver
+# You can expose this ViewSet for admin or profile pages
 class RideViewSet(viewsets.ModelViewSet):
     serializer_class = RideSerializer
     queryset = Ride.objects.all()
@@ -63,6 +76,9 @@ class RideViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Ride.objects.filter(driver=self.request.user)
 
+# FRONTEND:
+# - "Register" screen/form
+# Sends user registration data and receives auth token
 class RegisterUserAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
@@ -78,6 +94,9 @@ class RegisterUserAPIView(generics.CreateAPIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# FRONTEND:
+# - "Join Ride" button
+# Called when a user joins a ride from ride detail or list
 class JoinRideView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -103,6 +122,9 @@ class JoinRideView(APIView):
         ride.save()
         return Response({"message": "Successfully joined the ride."}, status=status.HTTP_200_OK)
 
+# FRONTEND:
+# - "Check-In" button
+# Called when ride starts, to mark user as checked in
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def ride_check_in(request, ride_id):
@@ -119,6 +141,9 @@ def ride_check_in(request, ride_id):
     ride.save()
     return Response({'success': 'Checked in successfully'}, status=status.HTTP_200_OK)
 
+# FRONTEND:
+# - "Check-Out" button
+# Called when ride ends, to mark user as checked out
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def ride_check_out(request, ride_id):

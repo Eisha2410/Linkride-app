@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
+from .utils import get_distance_km
 
 # FRONTEND: Used only for Django template testing
 # NOT used in React frontend
@@ -41,7 +42,17 @@ class RideListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(driver=self.request.user)
+        origin = self.request.data.get('origin')
+        destination = self.request.data.get('destination')
+
+        distance_km = get_distance_km(origin, destination)
+        fare = distance_km * settings.PER_KM_RATE
+
+        serializer.save(
+            driver=self.request.user,
+            distance_km=distance_km,
+            fare=fare
+        )
 
 # FRONTEND:
 # - View/Edit/Delete specific ride

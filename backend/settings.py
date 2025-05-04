@@ -137,4 +137,5 @@ REST_FRAMEWORK = {
     ]
 }
 
+GOOGLE_MAPS_API_KEY = 'AIzaSyChlzgPiMIP-P-JuAlzzbQLA_v5-vG_qgg'
 PER_KM_RATE = 50

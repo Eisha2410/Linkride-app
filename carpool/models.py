@@ -48,12 +48,6 @@ class Ride(models.Model):
     # Used in fare calculation
     distance_km = models.FloatField(default=0)
 
-    def save(self, *args, **kwargs):
-        # Auto-calculate fare based on per-km rate from settings
-        if self.distance_km:
-            self.fare = self.distance_km * settings.PER_KM_RATE
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"{self.origin} to {self.destination} by {self.driver}"
 

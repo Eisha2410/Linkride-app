@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 class RideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
-        fields = '__all__'
+        fields = ['id', 'driver', 'origin', 'destination', 'date', 'time', 'seats_available', 'fare', 'status']
         read_only_fields = [
             'driver',              # Set automatically from logged-in user
             'created_at',          # Auto timestamp

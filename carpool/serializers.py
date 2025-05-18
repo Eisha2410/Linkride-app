@@ -10,15 +10,20 @@ from django.contrib.auth.models import User
 class RideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
-        fields = ['id', 'driver', 'origin', 'destination', 'date', 'time', 'seats_available', 'fare', 'status']
-        read_only_fields = [
-            'driver',              # Set automatically from logged-in user
-            'created_at',          # Auto timestamp
-            'is_checked_in',       # Updated when "Check In" button is clicked
-            'check_in_time',       # Timestamp set on check-in
-            'is_checked_out',      # Updated when "Check Out" button is clicked
-            'check_out_time'       # Timestamp set on check-out
-        ]
+        fields =  '__all__'
+        read_only_fields = ['driver', 'vehicle']  
+    
+    
+    def validate(self, data):
+        request = self.context['request']
+        user = request.user
+
+        if user.role != 'driver':
+            raise serializers.ValidationError("Only drivers can create rides.")
+        if not user.driverprofile.vehicle_set.exists():
+            raise serializers.ValidationError("Driver must have a registered vehicle.")
+        
+        return data
 
 # FRONTEND:
 # Used for:

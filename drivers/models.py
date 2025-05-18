@@ -3,12 +3,13 @@ from django.conf import settings
 from accounts.models import User
 
 class DriverProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, limit_choices_to={"role": "driver"})
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    vehicle_number = models.CharField(max_length=50, default='UNKNOWN123')
     license_number = models.CharField(max_length=50)
-    experience_years = models.PositiveIntegerField()
+    experience_years = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.user.full_name
+        return f"{self.user.full_name} - Driver Profile"
 
 class Vehicle(models.Model):
     driver = models.OneToOneField(

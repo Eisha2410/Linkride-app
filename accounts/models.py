@@ -19,12 +19,14 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(cnic, phone_number, password, **extra_fields)
 
+        
 class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
         ('driver', 'Driver'),
         ('passenger', 'Passenger'),
     )
-
+    
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
     cnic = models.CharField(max_length=15, unique=True)
     phone_number = models.CharField(max_length=15, unique=True)
     full_name = models.CharField(max_length=100)

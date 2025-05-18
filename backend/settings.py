@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'carpool',
     'accounts.apps.AccountsConfig',
-    'drivers',
-    'passengers',
+    'drivers.apps.DriverConfig',
+    'passengers.apps.PassengersConfig',
     'rest_framework',
     'corsheaders',
     'rest_framework.authtoken',
@@ -143,3 +143,7 @@ REST_FRAMEWORK = {
 GOOGLE_MAPS_API_KEY = 'AIzaSyChlzgPiMIP-P-JuAlzzbQLA_v5-vG_qgg'
 PER_KM_RATE = 50
 AUTH_USER_MODEL = 'accounts.User'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]

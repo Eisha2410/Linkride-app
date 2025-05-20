@@ -26,12 +26,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('passenger', 'Passenger'),
     )
     
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-    cnic = models.CharField(max_length=15, unique=True)
-    phone_number = models.CharField(max_length=15, unique=True)
-    full_name = models.CharField(max_length=100)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-    education = models.CharField(max_length=100, blank=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, null=False, blank=False)
+    cnic = models.CharField(max_length=15, unique=True, null=False, blank=False)
+    phone_number = models.CharField(max_length=15, unique=True, null=False, blank=False)
+    full_name = models.CharField(max_length=100, null=False, blank=False)
+    education = models.CharField(max_length=100, null=False, blank=False)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

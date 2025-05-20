@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
+from accounts.forms import CustomUserAdminForm
 
 class UserAdmin(BaseUserAdmin):
     model = User
@@ -21,3 +22,14 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('cnic',)
 
 admin.site.register(User, UserAdmin)
+
+class CustomUserAdmin(UserAdmin):
+    add_form = CustomUserAdminForm
+    form = CustomUserAdminForm
+    model = User
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('cnic', 'phone_number', 'education', 'role')}),
+    )
+    
+if not admin.site.is_registered(User):
+    admin.site.register(User, CustomUserAdmin)

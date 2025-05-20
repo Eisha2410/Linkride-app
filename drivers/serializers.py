@@ -1,13 +1,17 @@
 from rest_framework import serializers
 from .models import DriverProfile, Vehicle
 from accounts.models import User
+from drivers.models import DriverProfile
 
-class DriverProfileSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()  
+class DriverProfileSerializer(serializers.ModelSerializer):  
+    cnic = serializers.CharField(source='user.cnic', read_only=True)
+    phone_number = serializers.CharField(source='user.phone_number', read_only=True)
+    full_name = serializers.CharField(source='user.full_name', read_only=True)
+    education = serializers.CharField(source='user.education', read_only=True)
 
     class Meta:
         model = DriverProfile
-        fields = ['user'] 
+        fields = ['user', 'vehicle_number', 'license_number', 'experience_years', 'cnic', 'phone_number', 'full_name', 'education']
 
 class VehicleSerializer(serializers.ModelSerializer):
     class Meta:

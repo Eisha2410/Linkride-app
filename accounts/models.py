@@ -25,7 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('driver', 'Driver'),
         ('passenger', 'Passenger'),
     )
-    
+    full_name = models.CharField(max_length=100)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, null=False, blank=False)
     cnic = models.CharField(max_length=15, unique=True, null=False, blank=False)
     phone_number = models.CharField(max_length=15, unique=True, null=False, blank=False)
@@ -39,6 +39,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'cnic'
     REQUIRED_FIELDS = ['phone_number', 'full_name']
+
+    objects = CustomUserManager()
 
     def __str__(self):
         return f"{self.full_name} ({self.role})"

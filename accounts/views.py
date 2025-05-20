@@ -7,6 +7,30 @@ from drivers.models import DriverProfile
 from passengers.models import PassengerProfile
 from drivers.serializers import DriverProfileSerializer
 from passengers.serializers import PassengerProfileSerializer
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from .forms import SignUpForm  
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()  
+            return redirect('http://localhost:3000/') 
+        else:
+            print(form.errors) 
+    else:
+        form = SignUpForm()
+    return render(request, 'accounts/signup.html', {'form': form})
+
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login.html'
+
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy('home')  
 
 class UserRegistrationView(APIView):
     def post(self, request):

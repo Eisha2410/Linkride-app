@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LinkRide</title>
+</head>
+<body>
+    <header>
+        <h1>LinkRide</h1>
+        <nav>
+            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'logout' %}">Logout</a> |
+            <a href="{% url 'signup' %}">Signup</a>
+        </nav>
+    </header>
+    <hr>
+    
+    {% block content %}
+    {% endblock %}
+    
+    <hr>
+    <footer>&copy; 2025 LinkRide</footer>
+</body>
+</html>

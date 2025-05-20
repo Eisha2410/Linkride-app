@@ -32,6 +32,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('api/', include('carpool.urls')), 
     path('api-token-auth/', obtain_auth_token),
     path('api/', include('accounts.urls')),
